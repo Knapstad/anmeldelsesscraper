@@ -65,6 +65,7 @@ try:
        
 def getGameTekst(url):
        global driver
+       
        try:
               driver.get(url)
        except TimeoutException:
@@ -74,10 +75,16 @@ def getGameTekst(url):
               
        
        global gamer
+       if len(driver.find_elements_by_link_text("uoh"))>0:
+              driver.find_element_by_link_text("uoh").click()
+              
        gameTittel = driver.find_element_by_tag_name("h1").text
 #       if gameTittel not in gamer:
        gamer.setdefault(gameTittel,[])
-       intro= driver.find_element_by_tag_name("h2").text
+       try:
+              intro= driver.find_element_by_tag_name("h2").text
+       except:
+              intro= driver.find_element_by_class_name("headline").text
        anmeldtekst =  ""
        for i in driver.find_element_by_xpath("//* [@class='text clearfix']").find_elements_by_tag_name("p"):
               if len(i.find_elements_by_tag_name("em")) > 0:
@@ -162,7 +169,7 @@ def getPressTekst(url):
        
 
 
-def getTekst(liste, funksjon, index=0):
+def getText(liste, funksjon, index=0):
        a=index
        for i in liste[index:-1]:
               a+=1
