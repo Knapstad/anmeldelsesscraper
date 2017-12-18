@@ -43,7 +43,7 @@ try:
 except:
        print("links not loaded")
 
-def gamer():
+def gamertekst():
        
        side=1
        driver.get("https://www.gamer.no/anmeldelser?type=products&sortBy=tek_review_published&sortDir=desc&limit=10&timespan=all")
