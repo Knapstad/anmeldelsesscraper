@@ -20,6 +20,7 @@ import requests
 import csv
 import os
 
+
 os.chdir("z://Documents/Script/anmeldelsesscraper")
 date = datetime.now()
 today=str(date.day)+"."+str(date.month)
@@ -43,7 +44,7 @@ try:
 except:
        print("links not loaded")
 
-def gamertekst():
+def gamerhref():
        
        side=1
        driver.get("https://www.gamer.no/anmeldelser?type=products&sortBy=tek_review_published&sortDir=desc&limit=10&timespan=all")
@@ -74,17 +75,20 @@ def getGameTekst(url):
               driver.get(url)
               
        
-       global gamer
-       if len(driver.find_elements_by_link_text("uoh"))>0:
-              driver.find_element_by_link_text("uoh").click()
-              
+       global gamer2
+       if len(driver.find_elements_by_link_text("Vis alle"))>0:
+              visalle=driver.find_element_by_link_text("Vis alle" )
+              scroll(visalle)
+              vurl=visalle.get_attribute("href")
+              driver.get(vurl)
+       
        gameTittel = driver.find_element_by_tag_name("h1").text
 #       if gameTittel not in gamer:
-       gamer.setdefault(gameTittel,[])
+       gamer2.setdefault(gameTittel,[])
        try:
-              intro= driver.find_element_by_tag_name("h2").text
-       except:
               intro= driver.find_element_by_class_name("headline").text
+       except:
+              intro= driver.find_element_by_tag_name("h2").text
        anmeldtekst =  ""
        for i in driver.find_element_by_xpath("//* [@class='text clearfix']").find_elements_by_tag_name("p"):
               if len(i.find_elements_by_tag_name("em")) > 0:
@@ -104,9 +108,8 @@ def getGameTekst(url):
               score="NA"
        else:
               score= (karakter/10)*100
-       gamer[gameTittel]=[intro+anmeldtekst,karakter,score, "Spill" ]
-#       else:
-#              pass
+       gamer2[gameTittel]=[intro+" "+anmeldtekst,karakter,score, "Spill" ]
+       
 
 
 presslinks = []
